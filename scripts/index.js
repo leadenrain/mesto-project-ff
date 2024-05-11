@@ -1,6 +1,6 @@
 const cardsList = document.querySelector('.places__list');
 const deleteCard = (event) => {
-    event.target.closest('.card').remove ();
+    event.target.closest('.card').remove();
 }
 
 function addCard(cardData, deleteCard) {
@@ -10,18 +10,20 @@ function addCard(cardData, deleteCard) {
     
     const cardTitle = card.querySelector('.card__title');
     const cardImage = card.querySelector('.card__image');
+    
 
     cardTitle.textContent = cardData.name;
-    cardImage.src = cardData.link
+    cardImage.alt = cardData.name;
+    cardImage.src = cardData.link;
 
     const deleteButton = card.querySelector('.card__delete-button');
     deleteButton.addEventListener('click', deleteCard);
 
-    cardsList.append(card);
+    return card;
 }
 
 initialCards.forEach(function (cardData) {
-    addCard(cardData, deleteCard);
+    cardsList.append(addCard(cardData, deleteCard));
 })
 
     
