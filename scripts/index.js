@@ -18,7 +18,7 @@ function addCard(cardData, deleteCard) {
     const cardImage = card.querySelector('.card__image');
 
     cardTitle.textContent = cardData.name;
-    cardImage.alt = cardData.name;
+    cardImage.alt = cardData.alt;
     cardImage.src = cardData.link;
 
     const deleteButton = card.querySelector('.card__delete-button');
