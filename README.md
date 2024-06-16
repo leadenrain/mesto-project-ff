@@ -1,3 +1,1 @@
-https://github.com/leadenrain/Mesto.git
-# Mesto
-modals, forms, likes
+https://github.com/leadenrain/mesto-project-ff.git
