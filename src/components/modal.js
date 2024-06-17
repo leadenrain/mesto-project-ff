@@ -3,25 +3,28 @@
 export const openModal = (popup) => {                             
     popup.classList.add('popup_is-opened');                
     document.addEventListener('keydown', onKeyCloseModal); 
-    popup.addEventListener('click', onOverlayCloseModal);  
 };
      
-export const closeModal = () => {                                          
-    const openedModal = document.querySelector('.popup_is-opened'); 
-
-    openedModal.classList.remove('popup_is-opened');                
+export const closeModal = (popup) => {    
+    popup.classList.remove('popup_is-opened');                
     document.removeEventListener('keydown', onKeyCloseModal);       
-    openedModal.removeEventListener('click', onOverlayCloseModal);  
 };
 
 const onKeyCloseModal = (evt) => {  
-    if(evt.key === 'Escape') {      
-        closeModal();               
+    const openedModal = document.querySelector('.popup_is-opened');
+    if(evt.key === 'Escape') {  
+        closeModal(openedModal);               
     }                            
 };
 
-const onOverlayCloseModal = (evt) => {          
-    if(!evt.target.closest('.popup__content')){ 
-        closeModal();                           
-    }
-}
+export const openImageModal = (cardData) => {
+    const cardImageModal = document.querySelector('.popup_type_image');
+    const modalImage = cardImageModal.querySelector('.popup__image'); 
+    const modalCaption = cardImageModal.querySelector('.popup__caption');
+
+    modalImage.src = cardData.link;
+    modalImage.alt = cardData.name;
+    modalCaption.textContent = cardData.name;
+
+    openModal(cardImageModal);
+};

@@ -1,15 +1,16 @@
-import { initialCards } from './cards.js'; 
-import { openModal } from '../modal.js';
-
-
-export const deleteCard = (event) => {             
-    event.target.closest('.card').remove(); 
+export const deleteCard = (evt) => {             
+    evt.target.closest('.card').remove(); 
 }
 
-export const createCard = (cardData, deleteCard) => {  
+export const likeCard = (evt) => {
+    evt.target.classList.toggle('card__like-button_is-active');
+}
+
+export const createCard = ({cardData, deleteCard, openImageModal, likeCard}) => {  
 
     const cardTemplate = document.querySelector('#card-template').content; 
-    const card = cardTemplate.querySelector('.card').cloneNode(true);     
+    const cardElement = cardTemplate.cloneNode(true); 
+    const card = cardElement.querySelector('.card');
     
     const cardTitle = card.querySelector('.card__title'); 
     const cardImage = card.querySelector('.card__image'); 
@@ -18,26 +19,19 @@ export const createCard = (cardData, deleteCard) => {
     cardImage.alt = cardData.name;         
     cardImage.src = cardData.link;        
 
-    cardImage.addEventListener('click', () => {    
-        const cardImageModal = document.querySelector('.popup_type_image');
-        const modalImage = cardImageModal.querySelector('.popup__image'); 
-        modalImage.src = cardImage.src;                                   
-        openModal(cardImageModal); 
-    });
-  
+    cardImage.addEventListener('click', () => {
+        openImageModal(cardData);
+    })
+
     const deleteCardButton = card.querySelector('.card__delete-button'); 
     deleteCardButton.addEventListener('click', deleteCard);              
 
     const likeButton = card.querySelector('.card__like-button'); 
-    likeButton.addEventListener('click', () => {                 
-        likeButton.classList.add('card__like-button_is-active'); 
-    });
-
+    likeButton.addEventListener('click', likeCard);               
+    
     return card; 
 };
 
-const cardsList = document.querySelector('.places__list'); 
-initialCards.forEach((cardData) => {                
-    const card = createCard(cardData, deleteCard);  
-    cardsList.append(card);                         
- });
+
+
+
