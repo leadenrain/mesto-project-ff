@@ -56,8 +56,8 @@ const handleSubmitCardForm = (evt) => {
 
     const newCard = createCard({deleteCard, cardData, openImageModal, likeCard});
 
-    cardsList.querySelector('li').before(newCard); 
-
+    cardsList.prepend(newCard);
+    addNewCardForm.reset();
     closeModal(addNewCardModal);  
 };
 
