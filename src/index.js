@@ -1,7 +1,7 @@
-import './index.css'  
-import { initialCards } from './components/card/cards'
+import './index.css';
+import { initialCards } from './components/card/cards';
 import { createCard, deleteCard, likeCard } from './components/card/card';
-import { openModal, closeModal, openImageModal } from './components/modal';
+import { openModal, closeModal, openImageModal, onOverlayCloseModal } from './components/modal';
 
 const editProfileButton = document.querySelector('.profile__edit-button');
 const addNewCardButton = document.querySelector('.profile__add-button');
@@ -52,7 +52,7 @@ const handleSubmitCardForm = (evt) => {
     const cardData = {  
         name: addNewCardFormNameInput.value, 
         link: addNewCardFormLinkInput.value  
-    }
+    };
 
     const newCard = createCard({deleteCard, cardData, openImageModal, likeCard});
 
@@ -66,15 +66,8 @@ addNewCardForm.addEventListener('submit', handleSubmitCardForm);
 closeModalButtons.forEach((button) => {      
     button.addEventListener('click', (evt) => { 
         closeModal(evt.target.closest('.popup'));                        
-    })
+    });
 });
-
-
-const onOverlayCloseModal = (evt) => {          
-    if(evt.target === evt.currentTarget){
-        closeModal(evt.target);                           
-    }
-};
 
 modals.forEach((popup) => {
     popup.addEventListener('click', onOverlayCloseModal);

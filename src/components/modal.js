@@ -1,5 +1,3 @@
-
-
 export const openModal = (popup) => {                             
     popup.classList.add('popup_is-opened');                
     document.addEventListener('keydown', onKeyCloseModal); 
@@ -15,6 +13,12 @@ const onKeyCloseModal = (evt) => {
     if(evt.key === 'Escape') {  
         closeModal(openedModal);               
     }                            
+};
+
+export const onOverlayCloseModal = (evt) => {          
+    if(evt.target === evt.currentTarget){
+        closeModal(evt.target);                           
+    }
 };
 
 export const openImageModal = (cardData) => {
