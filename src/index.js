@@ -1,7 +1,7 @@
 import './index.css';
 import { initialCards } from './components/card/cards';
 import { createCard, deleteCard, likeCard } from './components/card/card';
-import { openModal, closeModal, openImageModal, onOverlayCloseModal } from './components/modal';
+import { openModal, closeModal, onOverlayCloseModal } from './components/modal';
 
 const editProfileButton = document.querySelector('.profile__edit-button');
 const addNewCardButton = document.querySelector('.profile__add-button');
@@ -17,6 +17,17 @@ const addNewCardForm = document.forms['new-place'];
 const addNewCardFormNameInput = addNewCardForm.querySelector('.popup__input_type_card-name'); 
 const addNewCardFormLinkInput = addNewCardForm.querySelector('.popup__input_type_url'); 
 const modals = document.querySelectorAll('.popup');
+const cardImageModal = document.querySelector('.popup_type_image');
+const modalImage = cardImageModal.querySelector('.popup__image'); 
+const modalCaption = cardImageModal.querySelector('.popup__caption');
+
+const openImageModal = (cardData) => {
+    modalImage.src = cardData.link;
+    modalImage.alt = cardData.name;
+    modalCaption.textContent = cardData.name;
+
+    openModal(cardImageModal);
+};
 
 const cardsList = document.querySelector('.places__list'); 
 initialCards.forEach((cardData) => {                
@@ -72,3 +83,4 @@ closeModalButtons.forEach((button) => {
 modals.forEach((popup) => {
     popup.addEventListener('click', onOverlayCloseModal);
 });
+

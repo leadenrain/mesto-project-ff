@@ -1,8 +1,3 @@
-const cardImageModal = document.querySelector('.popup_type_image');
-const modalImage = cardImageModal.querySelector('.popup__image'); 
-const modalCaption = cardImageModal.querySelector('.popup__caption');
-const openedModal = document.querySelector('.popup_is-opened');
-
 export const openModal = (popup) => {                             
     popup.classList.add('popup_is-opened');                
     document.addEventListener('keydown', onKeyCloseModal); 
@@ -15,6 +10,7 @@ export const closeModal = (popup) => {
 
 const onKeyCloseModal = (evt) => {  
     if(evt.key === 'Escape') {  
+        const openedModal = document.querySelector('.popup_is-opened'); 
         closeModal(openedModal);               
     }                            
 };
@@ -25,10 +21,3 @@ export const onOverlayCloseModal = (evt) => {
     }
 };
 
-export const openImageModal = (cardData) => {
-    modalImage.src = cardData.link;
-    modalImage.alt = cardData.name;
-    modalCaption.textContent = cardData.name;
-
-    openModal(cardImageModal);
-};
