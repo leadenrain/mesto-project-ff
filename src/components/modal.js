@@ -17,7 +17,7 @@ const onKeyCloseModal = (evt) => {
 
 export const onOverlayCloseModal = (evt) => {          
     if(evt.target === evt.currentTarget){
-        closeModal(evt.target);                           
+        closeModal(evt.currentTarget);                           
     }
 };
 

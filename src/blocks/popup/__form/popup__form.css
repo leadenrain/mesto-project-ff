@@ -1,3 +1,17 @@
 .popup__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-top: 27px;
 }
+
+.popup__error_visible {
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: rgba(255, 0, 0, 1);
+}
+
+
+

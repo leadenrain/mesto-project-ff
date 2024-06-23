@@ -1,5 +1,6 @@
 export const deleteCard = (evt) => {             
-    evt.target.closest('.card').remove(); 
+    const cardToDelete = evt.target.closest('.card');
+    cardToDelete.remove(); 
 }
 
 export const likeCard = (evt) => {

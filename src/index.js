@@ -2,7 +2,9 @@ import './index.css';
 import { initialCards } from './components/card/cards';
 import { createCard, deleteCard, likeCard } from './components/card/card';
 import { openModal, closeModal, onOverlayCloseModal } from './components/modal';
+import { enableValidation, clearValidation } from './components/validation';
 
+// глобальные переменные
 const editProfileButton = document.querySelector('.profile__edit-button');
 const addNewCardButton = document.querySelector('.profile__add-button');
 const closeModalButtons = document.querySelectorAll('.popup__close');
@@ -20,7 +22,19 @@ const modals = document.querySelectorAll('.popup');
 const cardImageModal = document.querySelector('.popup_type_image');
 const modalImage = cardImageModal.querySelector('.popup__image'); 
 const modalCaption = cardImageModal.querySelector('.popup__caption');
+export const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible',
+};
 
+// включение валидации
+enableValidation(validationConfig);
+
+// открытие модалки с картинкой из карточки
 const openImageModal = (cardData) => {
     modalImage.src = cardData.link;
     modalImage.alt = cardData.name;
@@ -29,19 +43,23 @@ const openImageModal = (cardData) => {
     openModal(cardImageModal);
 };
 
+// вывод дефолтных карточек
 const cardsList = document.querySelector('.places__list'); 
 initialCards.forEach((cardData) => {                
     const card = createCard({cardData, deleteCard, openImageModal, likeCard});  
     cardsList.append(card);                         
  });
 
+// слушатель на кнопки открытия модалки
 editProfileButton.addEventListener('click', () => {          
     editProfileNameInput.value = profileTitle.textContent;              
     editProfileDescriptionInput.value = profileDescription.textContent; 
-    
+
+    clearValidation(editProfileForm, validationConfig);
     openModal(editProfileModal);   
 });
 
+// редактирование профиля
 const handleSubmitProfileForm = (evt) => {                   
     evt.preventDefault();                                    
 
@@ -53,10 +71,12 @@ const handleSubmitProfileForm = (evt) => {
 
 editProfileForm.addEventListener('submit', handleSubmitProfileForm); 
 
+// открытие модалки с формой добавления новой карточки
 addNewCardButton.addEventListener('click', () => { 
     openModal(addNewCardModal);                    
 });
 
+// добавление новых карточек
 const handleSubmitCardForm = (evt) => {  
     evt.preventDefault();        
 
@@ -74,12 +94,14 @@ const handleSubmitCardForm = (evt) => {
 
 addNewCardForm.addEventListener('submit', handleSubmitCardForm); 
 
+// закрытие модалок по кнопке Х
 closeModalButtons.forEach((button) => {      
     button.addEventListener('click', (evt) => { 
         closeModal(evt.target.closest('.popup'));                        
     });
 });
 
+// закрытие модалок по оверлею
 modals.forEach((popup) => {
     popup.addEventListener('click', onOverlayCloseModal);
 });
