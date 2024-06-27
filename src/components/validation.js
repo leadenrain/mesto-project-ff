@@ -2,11 +2,11 @@
 export function enableValidation(validationConfig) {
   const forms = Array.from(document.querySelectorAll(validationConfig.formSelector));
 
-  forms.forEach((formElement) => {
-    formElement.addEventListener('submit', (evt) => {
+  forms.forEach((form) => {
+    form.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
-    setEventListeners(formElement, validationConfig);
+    setEventListeners(form, validationConfig);
   });
 }
 
@@ -75,5 +75,9 @@ export function clearValidation(formElement, validationConfig) {
   inputs.forEach((inputElement) => {
     hideInputError(formElement, inputElement, validationConfig);
   });
-  toggleButtonState(inputs, formElement.querySelector(validationConfig.submitButtonSelector), validationConfig);
+  toggleButtonState(
+    inputs,
+    formElement.querySelector(validationConfig.submitButtonSelector),
+    validationConfig
+  );
 }

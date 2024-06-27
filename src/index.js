@@ -36,7 +36,7 @@ const validationConfig = {
   errorClass: 'popup__error_visible'
 };
 
-//enableValidation(validationConfig);
+enableValidation(validationConfig);
 
 // сохранение
 const showSaving = (submitButton) => {
@@ -87,7 +87,7 @@ addNewCardButton.addEventListener('click', () => {
 
 // добавление новых карточек
 const handleSubmitCardForm = (evt) => {
-  evt.preventDefault();
+  // evt.preventDefault();
   showSaving(evt.submitter);
 
   postNewCard({
@@ -120,9 +120,7 @@ profileAvatar.addEventListener('click', () => {
 
 // редактирование аватара
 const changeAvatar = (evt) => {
-  evt.preventDefault();
-  // const submitButton = evt.target.querySelector('[type="submit"]');
-  // const submitButtonText = submitButton.textContent;
+  // evt.preventDefault();
   showSaving(evt.submitter);
 
   updateAvatar({ avatar: editAvatarUrlInput.value })
@@ -135,8 +133,6 @@ const changeAvatar = (evt) => {
       alert(`Аватар не обновлен. ${err}`);
     })
     .finally(() => {
-      // submitButton.textContent = submitButtonText;
-      // evt.submitter.textContent = 'Сохранить';
       resetSumbitButton(evt.submitter);
     });
 };
@@ -145,7 +141,7 @@ editAvatarForm.addEventListener('submit', changeAvatar);
 
 // редактирование профиля
 const handleSubmitProfileForm = (evt) => {
-  evt.preventDefault();
+  // evt.preventDefault();
   showSaving(evt.submitter);
 
   editProfile({
