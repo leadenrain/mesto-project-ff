@@ -1,23 +1,24 @@
-export const openModal = (popup) => {                             
-    popup.classList.add('popup_is-opened');                
-    document.addEventListener('keydown', onKeyCloseModal); 
-};
-     
-export const closeModal = (popup) => {    
-    popup.classList.remove('popup_is-opened');                
-    document.removeEventListener('keydown', onKeyCloseModal);       
+export const openModal = (popup) => {
+  popup.classList.add('popup_is-opened');
+  document.addEventListener('keydown', onKeyCloseModal);
 };
 
-const onKeyCloseModal = (evt) => {  
-    if(evt.key === 'Escape') {  
-        const openedModal = document.querySelector('.popup_is-opened'); 
-        closeModal(openedModal);               
-    }                            
+export const closeModal = (popup) => {
+  popup.classList.remove('popup_is-opened');
+  document.removeEventListener('keydown', onKeyCloseModal);
+  const form = popup.querySelector('form');
+  form?.reset();
 };
 
-export const onOverlayCloseModal = (evt) => {          
-    if(evt.target === evt.currentTarget){
-        closeModal(evt.currentTarget);                           
-    }
+const onKeyCloseModal = (evt) => {
+  if (evt.key === 'Escape') {
+    const openedModal = document.querySelector('.popup_is-opened');
+    closeModal(openedModal);
+  }
 };
 
+export const onOverlayCloseModal = (evt) => {
+  if (evt.target === evt.currentTarget) {
+    closeModal(evt.currentTarget);
+  }
+};
