@@ -19,16 +19,8 @@
   cursor: pointer;
 }
 
-.popup__button_disabled {
-  background: none;
-  border: 1px solid rgba(0, 0, 0, 1);
-  opacity: 0.2;
-  color: rgba(0, 0, 0, 1);
-}
-
-.popup__button_disabled:hover {
-  cursor: default;
-  background: none; 
+.popup_type_confirm .popup__button {
+  margin-top: 38px;
 }
 
 @media screen and (max-width: 568px) {

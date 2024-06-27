@@ -1,0 +1,16 @@
+.profile__image-overlay {
+    background-color: rgba(0, 0, 0, .8);
+    background-image: url('/src/images/edit-icon.svg');
+    background-size: 20%;
+    background-repeat: no-repeat;
+    background-position: center;
+    inline-size: inherit;
+    block-size: inherit;
+    cursor: pointer;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.profile__image-overlay:hover {
+    opacity: 1;
+}

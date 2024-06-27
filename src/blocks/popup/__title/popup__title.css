@@ -4,6 +4,10 @@
   line-height: 30px;
 }
 
+.popup_type_confirm .popup__title {
+  font-weight: 900;
+}
+
 @media screen and (max-width: 568px) {
   .popup__title {
     font-size: 18px;
