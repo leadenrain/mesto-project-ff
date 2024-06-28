@@ -39,6 +39,24 @@ export const updateAvatar = (avatar) => {
   }).then(checkRes);
 };
 
+// проверка действительности URL
+export const checkAvatarUrlValidity = (url) => {
+  return fetch(url, {
+    method: 'HEAD'
+  })
+    .then((res) => {
+      if (res.ok) {
+        return true;
+      } else {
+        return 'Картинка не найдена';
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      return false;
+    });
+};
+
 // загрузка карточек с сервера
 export const getCards = () => {
   return fetch(`${token.masterUrl}/cards`, {

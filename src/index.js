@@ -2,7 +2,14 @@ import './index.css';
 import { createCard, deleteCard, likeCard } from './components/card/card';
 import { openModal, closeModal, onOverlayCloseModal } from './components/modal';
 import { enableValidation, clearValidation } from './components/validation';
-import { getCards, getUserInfo, postNewCard, updateAvatar, editProfile } from './components/API';
+import {
+  getCards,
+  getUserInfo,
+  postNewCard,
+  updateAvatar,
+  editProfile,
+  checkAvatarUrlValidity
+} from './components/API';
 
 // глобальные переменные
 const profileAvatar = document.querySelector('.profile__image');
@@ -48,15 +55,6 @@ const resetSumbitButton = (submitButton) => {
   submitButton.textContent = 'Сохранить';
 };
 
-// открытие модалки с картинкой из карточки
-const openImageModal = (cardData) => {
-  modalImage.src = cardData.link;
-  modalImage.alt = cardData.name;
-  modalCaption.textContent = cardData.name;
-
-  openModal(cardImageModal);
-};
-
 // вывод карточек с сервера
 Promise.all([getUserInfo(), getCards()])
   .then(([user, cards]) => {
@@ -70,6 +68,15 @@ Promise.all([getUserInfo(), getCards()])
   .catch((err) => {
     alert(err);
   });
+
+// открытие модалки с картинкой из карточки
+const openImageModal = (cardData) => {
+  modalImage.src = cardData.link;
+  modalImage.alt = cardData.name;
+  modalCaption.textContent = cardData.name;
+
+  openModal(cardImageModal);
+};
 
 // слушатель на кнопки открытия модалки
 editProfileButton.addEventListener('click', () => {
@@ -87,7 +94,6 @@ addNewCardButton.addEventListener('click', () => {
 
 // добавление новых карточек
 const handleSubmitCardForm = (evt) => {
-  // evt.preventDefault();
   showSaving(evt.submitter);
 
   postNewCard({
@@ -120,28 +126,32 @@ profileAvatar.addEventListener('click', () => {
 
 // редактирование аватара
 const changeAvatar = (evt) => {
-  // evt.preventDefault();
   showSaving(evt.submitter);
-
-  updateAvatar({ avatar: editAvatarUrlInput.value })
-    .then((profile) => {
-      profileAvatar.style.backgroundImage = `url(${profile.avatar})`;
-      editAvatarForm.reset();
-      closeModal(avatarModal);
-    })
-    .catch((err) => {
-      alert(`Аватар не обновлен. ${err}`);
-    })
-    .finally(() => {
+  checkAvatarUrlValidity(editAvatarUrlInput.value).then((isValid) => {
+    if (isValid) {
+      updateAvatar({ avatar: editAvatarUrlInput.value })
+        .then((profile) => {
+          profileAvatar.style.backgroundImage = `url(${profile.avatar})`;
+          editAvatarForm.reset();
+          closeModal(avatarModal);
+        })
+        .catch((err) => {
+          alert(`Аватар не обновлен. ${err}`);
+        })
+        .finally(() => {
+          resetSumbitButton(evt.submitter);
+        });
+    } else {
+      alert('По данному адресу картинка не обнаружена');
       resetSumbitButton(evt.submitter);
-    });
+    }
+  });
 };
 
 editAvatarForm.addEventListener('submit', changeAvatar);
 
 // редактирование профиля
 const handleSubmitProfileForm = (evt) => {
-  // evt.preventDefault();
   showSaving(evt.submitter);
 
   editProfile({
