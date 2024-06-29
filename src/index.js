@@ -134,7 +134,7 @@ addNewCardForm.addEventListener('submit', handleSubmitCardForm);
 // удаление карточки
 const deleteCard = (cardId) => {
   removeCard(cardId)
-    .then((data) => {
+    .then(() => {
       const cardToDelete = document.getElementById(cardId);
       cardToDelete.remove();
       closeModal(confirmModal);

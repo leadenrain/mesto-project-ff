@@ -1,0 +1,8 @@
+.popup__input-error {
+    block-size: 30px;
+}
+
+.description-input-error,
+.link-input-error {
+    block-size: 15px;
+}

@@ -1,11 +1,11 @@
 import { addLike, removeLike } from '../API';
 
-// лайк
+// постановка/снятие лайка
 const likeCard = (likeButton, cardId, setLikeCount) => {
   if (likeButton.classList.contains('card__like-button_is-active')) {
     removeLike(cardId)
       .then((cardData) => {
-        setLikeCount(cardData);
+        setLikeCount(cardData.likes.length);
         likeButton.classList.remove('card__like-button_is-active');
       })
       .catch((err) => {
@@ -14,7 +14,7 @@ const likeCard = (likeButton, cardId, setLikeCount) => {
   } else {
     addLike(cardId)
       .then((cardData) => {
-        setLikeCount(cardData);
+        setLikeCount(cardData.likes.length);
         likeButton.classList.add('card__like-button_is-active');
       })
       .catch((err) => {
@@ -55,10 +55,12 @@ export const createCard = ({ cardData, openImageModal, myId, handleDeleteCardCon
   }
 
   // счетчик лайков
-  const setLikeCount = (cardData) => {
+  const setLikeCount = (likesCount) => {
     const likeCount = card.querySelector('.card__like-count');
-    likeCount.textContent = cardData.likes.length;
+    likeCount.textContent = likesCount;
   };
+
+  setLikeCount(cardData.likes.length);
 
   // слушатель на кнопку лайка
   const likeButton = card.querySelector('.card__like-button');
@@ -66,7 +68,12 @@ export const createCard = ({ cardData, openImageModal, myId, handleDeleteCardCon
     likeCard(likeButton, cardId, setLikeCount);
   });
 
-  likeCard(likeButton, cardId, setLikeCount);
+  // вывод лайков
+  const hasMyLike = cardData.likes.some(({ _id }) => _id === myId);
+
+  if (hasMyLike) {
+    likeButton.classList.add('card__like-button_is-active');
+  }
 
   return card;
 };
