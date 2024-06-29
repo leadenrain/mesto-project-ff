@@ -40,6 +40,7 @@
 .popup__button_disabled{background:none;border:1px solid #000;color:#000;opacity:.2}.popup__button_disabled:hover{background:none;cursor:default}
 .popup__error_visible{color:red;font-family:Inter,Arial,Helvetica,sans-serif;font-size:12px;font-weight:400;line-height:1.25}
 .popup__input_type_error{border-color:red}
+.popup__input-error{block-size:30px}.description-input-error,.link-input-error{block-size:15px}
 .popup{align-items:center;background-color:rgba(0,0,0,.5);bottom:0;display:none;font-family:Inter,Arial,sans-serif;justify-content:center;left:0;position:fixed;right:0;top:0;z-index:10}
 .popup_is-animated{display:flex;opacity:0;pointer-events:none;transition:visibility 0s .6s,opacity .6s;-webkit-user-select:none;-moz-user-select:none;user-select:none;visibility:hidden}
 .popup_is-opened{display:flex;opacity:1;pointer-events:all;transition:visibility 0s,opacity .6s;visibility:visible}
