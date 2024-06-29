@@ -58,7 +58,7 @@ const resetSumbitButton = (submitButton) => {
   submitButton.textContent = 'Сохранить';
 };
 
-// вывод карточек с сервера
+// вывод профиля и карточек
 Promise.all([getUserInfo(), getCards()])
   .then(([user, cards]) => {
     const myId = user._id;
@@ -69,6 +69,10 @@ Promise.all([getUserInfo(), getCards()])
       const card = createCard({ cardData, handleDeleteCardConfirm, openImageModal, myId });
       cardsList.append(card);
     });
+
+    profileTitle.textContent = user.name;
+    profileDescription.textContent = user.about;
+    profileAvatar.style.backgroundImage = `url(${user.avatar})`;
   })
   .catch((err) => {
     alert(err);
@@ -95,6 +99,7 @@ editProfileButton.addEventListener('click', () => {
 // слушалка на кнопку добавления новой карточки
 addNewCardButton.addEventListener('click', () => {
   clearValidation(addNewCardForm, validationConfig);
+  addNewCardForm.reset();
   openModal(addNewCardModal);
 });
 
@@ -144,15 +149,19 @@ const deleteCard = (cardId) => {
     });
 };
 
+// подтверждение удаления карточки
 export const handleDeleteCardConfirm = (cardId) => {
-  openModal(confirmModal);
-  confirmButton.addEventListener('click', () => {
+  const handleConfirmClick = () => {
     deleteCard(cardId);
-  });
+    confirmButton.removeEventListener('click', handleConfirmClick);
+  };
+  openModal(confirmModal);
+  confirmButton.addEventListener('click', handleConfirmClick);
 };
 
 profileAvatar.addEventListener('click', () => {
   clearValidation(editAvatarForm, validationConfig);
+  editAvatarForm.reset();
   openModal(avatarModal);
 });
 
