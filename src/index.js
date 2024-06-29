@@ -1,5 +1,5 @@
 import './index.css';
-import { createCard, deleteCard, likeCard } from './components/card/card';
+import { createCard, likeCard } from './components/card/card';
 import { openModal, closeModal, onOverlayCloseModal } from './components/modal';
 import { enableValidation, clearValidation } from './components/validation';
 import {
@@ -8,6 +8,7 @@ import {
   postNewCard,
   updateAvatar,
   editProfile,
+  removeCard,
   checkAvatarUrlValidity
 } from './components/API';
 
@@ -34,6 +35,8 @@ const modals = document.querySelectorAll('.popup');
 const cardImageModal = document.querySelector('.popup_type_image');
 const modalImage = cardImageModal.querySelector('.popup__image');
 const modalCaption = cardImageModal.querySelector('.popup__caption');
+const confirmModal = document.querySelector('.popup_type_confirm');
+const confirmButton = confirmModal.querySelector('.button');
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -59,9 +62,11 @@ const resetSumbitButton = (submitButton) => {
 Promise.all([getUserInfo(), getCards()])
   .then(([user, cards]) => {
     const myId = user._id;
+    editProfileNameInput.value = user.name;
+    editProfileDescriptionInput.value = user.about;
 
     cards.forEach((cardData) => {
-      const card = createCard({ cardData, deleteCard, openImageModal, myId });
+      const card = createCard({ cardData, handleDeleteCardConfirm, openImageModal, myId });
       cardsList.append(card);
     });
   })
@@ -78,7 +83,7 @@ const openImageModal = (cardData) => {
   openModal(cardImageModal);
 };
 
-// слушатель на кнопки открытия модалки
+// слушатель на кнопку редактирования профиля
 editProfileButton.addEventListener('click', () => {
   editProfileNameInput.value = profileTitle.textContent;
   editProfileDescriptionInput.value = profileDescription.textContent;
@@ -87,8 +92,9 @@ editProfileButton.addEventListener('click', () => {
   openModal(editProfileModal);
 });
 
-// открытие модалки с формой добавления новой карточки
+// слушалка на кнопку добавления новой карточки
 addNewCardButton.addEventListener('click', () => {
+  clearValidation(addNewCardForm, validationConfig);
   openModal(addNewCardModal);
 });
 
@@ -102,13 +108,18 @@ const handleSubmitCardForm = (evt) => {
   })
     .then((cardData) => {
       const myId = cardData.owner._id;
-      const newCard = createCard({ deleteCard, cardData, openImageModal, myId });
+      const newCard = createCard({
+        deleteCard,
+        cardData,
+        openImageModal,
+        myId,
+        handleDeleteCardConfirm
+      });
 
       cardsList.prepend(newCard);
       addNewCardForm.reset();
 
       closeModal(addNewCardModal);
-      clearValidation(addNewCardForm, validationConfig);
     })
     .catch((err) => {
       alert(`Карточка не добавлена. ${err}`);
@@ -120,7 +131,28 @@ const handleSubmitCardForm = (evt) => {
 
 addNewCardForm.addEventListener('submit', handleSubmitCardForm);
 
+// удаление карточки
+const deleteCard = (cardId) => {
+  removeCard(cardId)
+    .then((data) => {
+      const cardToDelete = document.getElementById(cardId);
+      cardToDelete.remove();
+      closeModal(confirmModal);
+    })
+    .catch((err) => {
+      alert(`Удаление не завершено. ${err}`);
+    });
+};
+
+export const handleDeleteCardConfirm = (cardId) => {
+  openModal(confirmModal);
+  confirmButton.addEventListener('click', () => {
+    deleteCard(cardId);
+  });
+};
+
 profileAvatar.addEventListener('click', () => {
+  clearValidation(editAvatarForm, validationConfig);
   openModal(avatarModal);
 });
 
@@ -173,14 +205,14 @@ const handleSubmitProfileForm = (evt) => {
 
 editProfileForm.addEventListener('submit', handleSubmitProfileForm);
 
-// закрытие модалок по кнопке Х
+// закрытие модалки по кнопке Х
 closeModalButtons.forEach((button) => {
   button.addEventListener('click', (evt) => {
     closeModal(evt.target.closest('.popup'));
   });
 });
 
-// закрытие модалок по оверлею
+// закрытие модалки по оверлею
 modals.forEach((popup) => {
   popup.addEventListener('click', onOverlayCloseModal);
 });
