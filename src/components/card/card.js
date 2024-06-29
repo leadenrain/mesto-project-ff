@@ -9,7 +9,7 @@ const likeCard = (likeButton, cardId, setLikeCount) => {
         likeButton.classList.remove('card__like-button_is-active');
       })
       .catch((err) => {
-        alert(`Лайк не поставлен. ${err}`);
+        alert(`Лайк не удален. ${err}`);
       });
   } else {
     addLike(cardId)
@@ -18,7 +18,7 @@ const likeCard = (likeButton, cardId, setLikeCount) => {
         likeButton.classList.add('card__like-button_is-active');
       })
       .catch((err) => {
-        alert(`Лайк не удален. ${err}`);
+        alert(`Лайк не поставлен. ${err}`);
       });
   }
 };
