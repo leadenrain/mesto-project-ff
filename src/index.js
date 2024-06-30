@@ -58,6 +58,8 @@ const resetSumbitButton = (submitButton) => {
   submitButton.textContent = 'Сохранить';
 };
 
+//@ todo: ф-я смены текста на кнопке подтверждения удаления
+
 // вывод профиля и карточек
 Promise.all([getUserInfo(), getCards()])
   .then(([user, cards]) => {
@@ -66,10 +68,9 @@ Promise.all([getUserInfo(), getCards()])
     editProfileDescriptionInput.value = user.about;
 
     cards.forEach((cardData) => {
-      const card = createCard({ cardData, handleDeleteCardConfirm, openImageModal, myId });
+      const card = createCard({ cardData, openConfirmModal, openImageModal, myId });
       cardsList.append(card);
     });
-
     profileTitle.textContent = user.name;
     profileDescription.textContent = user.about;
     profileAvatar.style.backgroundImage = `url(${user.avatar})`;
@@ -89,6 +90,7 @@ const openImageModal = (cardData) => {
 
 // слушатель на кнопку редактирования профиля
 editProfileButton.addEventListener('click', () => {
+  // при открытии модалки данные пользователя уже введены в форму
   editProfileNameInput.value = profileTitle.textContent;
   editProfileDescriptionInput.value = profileDescription.textContent;
 
@@ -118,7 +120,7 @@ const handleSubmitCardForm = (evt) => {
         cardData,
         openImageModal,
         myId,
-        handleDeleteCardConfirm
+        openConfirmModal
       });
 
       cardsList.prepend(newCard);
@@ -137,27 +139,42 @@ const handleSubmitCardForm = (evt) => {
 addNewCardForm.addEventListener('submit', handleSubmitCardForm);
 
 // удаление карточки
-const deleteCard = (cardId) => {
+const deleteCard = (cardId, card) => {
+  confirmButton.textContent = 'Удаление...';
   removeCard(cardId)
     .then(() => {
-      const cardToDelete = document.getElementById(cardId);
-      cardToDelete.remove();
+      card.remove();
       closeModal(confirmModal);
     })
     .catch((err) => {
       alert(`Удаление не завершено. ${err}`);
+    })
+    .finally(() => {
+      confirmButton.textContent = 'Да';
     });
 };
 
-// подтверждение удаления карточки
-export const handleDeleteCardConfirm = (cardId) => {
-  const handleConfirmClick = () => {
-    deleteCard(cardId);
-    confirmButton.removeEventListener('click', handleConfirmClick);
-  };
+// открыте модалки с формой подтверждения
+function openConfirmModal(cardId, card) {
+  confirmButton.cardId = cardId;
+  confirmButton.card = card;
   openModal(confirmModal);
-  confirmButton.addEventListener('click', handleConfirmClick);
-};
+}
+
+confirmButton.addEventListener('click', () => {
+  deleteCard(confirmButton.cardId, confirmButton.card);
+});
+
+// подтверждение удаления карточки
+// const handleDeleteCardConfirm = (cardId) => {
+//   const handleConfirmClick = () => {
+//     deleteCard(cardId);
+//     // удаляем слушалку с уже удаленного элемента
+//     confirmButton.removeEventListener('click', handleConfirmClick);
+//   };
+//   openModal(confirmModal);
+//   confirmButton.addEventListener('click', handleConfirmClick);
+// };
 
 profileAvatar.addEventListener('click', () => {
   clearValidation(editAvatarForm, validationConfig);

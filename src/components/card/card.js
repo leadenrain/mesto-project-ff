@@ -24,7 +24,7 @@ const likeCard = (likeButton, cardId, setLikeCount) => {
 };
 
 // создание карточки
-export const createCard = ({ cardData, openImageModal, myId, handleDeleteCardConfirm }) => {
+export const createCard = ({ cardData, openImageModal, myId, openConfirmModal }) => {
   const cardId = cardData._id;
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.cloneNode(true);
@@ -48,7 +48,7 @@ export const createCard = ({ cardData, openImageModal, myId, handleDeleteCardCon
 
   if (userId === myId) {
     deleteCardButton.addEventListener('click', () => {
-      handleDeleteCardConfirm(cardId);
+      openConfirmModal(cardId, card);
     });
   } else {
     deleteCardButton.remove();
@@ -69,7 +69,9 @@ export const createCard = ({ cardData, openImageModal, myId, handleDeleteCardCon
   });
 
   // вывод лайков
-  const hasMyLike = cardData.likes.some(({ _id }) => _id === myId);
+  const hasMyLike = cardData.likes.some(({ _id }) => {
+    return _id === myId;
+  });
 
   if (hasMyLike) {
     likeButton.classList.add('card__like-button_is-active');

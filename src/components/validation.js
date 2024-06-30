@@ -3,6 +3,7 @@ export function enableValidation(validationConfig) {
   const forms = Array.from(document.querySelectorAll(validationConfig.formSelector));
 
   forms.forEach((form) => {
+    // добавляем слушалки сабмита и инпута на все формы
     form.addEventListener('submit', (evt) => {
       evt.preventDefault();
     });
@@ -29,14 +30,14 @@ const hideInputError = (formElement, inputElement, validationConfig) => {
 
 // проверка валидности
 const checkInputValidity = (formElement, inputElement, validationConfig) => {
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage, validationConfig);
-  } else {
+  if (inputElement.validity.valid) {
     hideInputError(formElement, inputElement, validationConfig);
+  } else {
+    showInputError(formElement, inputElement, inputElement.validationMessage, validationConfig);
   }
 };
 
-// слушалки ввода на все формы
+// слушалки ввода на все поля всех форм
 const setEventListeners = (formElement, validationConfig) => {
   const inputs = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
   const submitButtonElement = formElement.querySelector(validationConfig.submitButtonSelector);
