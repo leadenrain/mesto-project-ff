@@ -195,7 +195,7 @@ const changeAvatar = (evt) => {
           alert(`Аватар не обновлен. ${err}`);
         })
         .finally(() => {
-          resetSumbitButton(evt.submitter);
+          showDefaultButtonTitle(evt.submitter);
         });
     } else {
       alert('По данному адресу картинка не обнаружена');
