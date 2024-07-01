@@ -50,16 +50,14 @@ let cardToDeleteId, cardToDelete;
 enableValidation(validationConfig);
 
 // сохранение
-const showSaving = (submitButton) => {
-  submitButton.textContent = 'Сохранение...';
+const showProcessButtonTitle = (submitButton, title = 'Сохранение...') => {
+  submitButton.textContent = title;
 };
 
 // ресет кнопки
-const resetSumbitButton = (submitButton) => {
-  submitButton.textContent = 'Сохранить';
+const showDefaultButtonTitle = (submitButton, title = 'Сохранить') => {
+  submitButton.textContent = title;
 };
-
-//@ todo: ф-я смены текста на кнопке подтверждения удаления
 
 // вывод профиля и карточек
 Promise.all([getUserInfo(), getCards()])
@@ -108,7 +106,7 @@ addNewCardButton.addEventListener('click', () => {
 
 // добавление новых карточек
 const handleSubmitCardForm = (evt) => {
-  showSaving(evt.submitter);
+  showProcessButtonTitle(evt.submitter);
 
   postNewCard({
     name: addNewCardFormNameInput.value,
@@ -133,7 +131,7 @@ const handleSubmitCardForm = (evt) => {
       alert(`Карточка не добавлена. ${err}`);
     })
     .finally(() => {
-      resetSumbitButton(evt.submitter);
+      showDefaultButtonTitle(evt.submitter);
     });
 };
 
@@ -141,7 +139,7 @@ addNewCardForm.addEventListener('submit', handleSubmitCardForm);
 
 // удаление карточки
 const deleteCard = (cardId, card) => {
-  confirmButton.textContent = 'Удаление...';
+  showProcessButtonTitle(confirmButton, 'Удаление...');
   removeCard(cardId)
     .then(() => {
       card.remove();
@@ -151,7 +149,7 @@ const deleteCard = (cardId, card) => {
       alert(`Удаление не завершено. ${err}`);
     })
     .finally(() => {
-      confirmButton.textContent = 'Да';
+      showDefaultButtonTitle(confirmButton, 'Да');
     });
 };
 
@@ -184,7 +182,7 @@ profileAvatar.addEventListener('click', () => {
 
 // редактирование аватара
 const changeAvatar = (evt) => {
-  showSaving(evt.submitter);
+  showProcessButtonTitle(evt.submitter);
   checkAvatarUrlValidity(editAvatarUrlInput.value).then((isValid) => {
     if (isValid) {
       updateAvatar({ avatar: editAvatarUrlInput.value })
@@ -201,7 +199,7 @@ const changeAvatar = (evt) => {
         });
     } else {
       alert('По данному адресу картинка не обнаружена');
-      resetSumbitButton(evt.submitter);
+      showDefaultButtonTitle(evt.submitter);
     }
   });
 };
@@ -210,7 +208,7 @@ editAvatarForm.addEventListener('submit', changeAvatar);
 
 // редактирование профиля
 const handleSubmitProfileForm = (evt) => {
-  showSaving(evt.submitter);
+  showProcessButtonTitle(evt.submitter);
 
   editProfile({
     name: editProfileNameInput.value,
@@ -225,7 +223,7 @@ const handleSubmitProfileForm = (evt) => {
       alert(`Профиль не обновлен. ${err}`);
     })
     .finally(() => {
-      resetSumbitButton(evt.submitter);
+      showDefaultButtonTitle(evt.submitter);
     });
 };
 
