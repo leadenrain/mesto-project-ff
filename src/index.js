@@ -45,6 +45,7 @@ const validationConfig = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 };
+let cardToDeleteId, cardToDelete;
 
 enableValidation(validationConfig);
 
@@ -156,20 +157,19 @@ const deleteCard = (cardId, card) => {
 
 // открыте модалки с формой подтверждения
 function openConfirmModal(cardId, card) {
-  confirmButton.cardId = cardId;
-  confirmButton.card = card;
+  cardToDeleteId = cardId;
+  cardToDelete = card;
   openModal(confirmModal);
 }
 
 confirmButton.addEventListener('click', () => {
-  deleteCard(confirmButton.cardId, confirmButton.card);
+  deleteCard(cardToDeleteId, cardToDelete);
 });
 
 // подтверждение удаления карточки
 // const handleDeleteCardConfirm = (cardId) => {
 //   const handleConfirmClick = () => {
 //     deleteCard(cardId);
-//     // удаляем слушалку с уже удаленного элемента
 //     confirmButton.removeEventListener('click', handleConfirmClick);
 //   };
 //   openModal(confirmModal);
