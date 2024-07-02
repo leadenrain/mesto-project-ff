@@ -1,4 +1,4 @@
-import { addLike, removeLike } from '../API';
+import { addLike, removeLike } from './API';
 
 // постановка/снятие лайка
 const likeCard = (likeButton, cardId, setLikeCount) => {

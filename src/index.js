@@ -1,5 +1,5 @@
 import './index.css';
-import { createCard, likeCard } from './components/card/card';
+import { createCard } from './components/card';
 import { openModal, closeModal, onOverlayCloseModal } from './components/modal';
 import { enableValidation, clearValidation } from './components/validation';
 import {
@@ -13,30 +13,37 @@ import {
 } from './components/API';
 
 // глобальные переменные
+const cardsList = document.querySelector('.places__list');
+
+const modals = document.querySelectorAll('.popup');
+const closeModalButtons = document.querySelectorAll('.popup__close');
+
 const profileAvatar = document.querySelector('.profile__image');
 const avatarModal = document.querySelector('.popup_type_avatar');
 const editAvatarForm = document.forms['edit-avatar'];
 const editAvatarUrlInput = editAvatarForm.querySelector('.popup__input_type_avatar');
+
+const profileTitle = document.querySelector('.profile__title');
+const profileDescription = document.querySelector('.profile__description');
 const editProfileButton = document.querySelector('.profile__edit-button');
-const addNewCardButton = document.querySelector('.profile__add-button');
-const closeModalButtons = document.querySelectorAll('.popup__close');
 const editProfileModal = document.querySelector('.popup_type_edit');
-const addNewCardModal = document.querySelector('.popup_type_new-card');
 const editProfileForm = document.forms['edit-profile'];
 const editProfileNameInput = editProfileForm.querySelector('.popup__input_type_name');
 const editProfileDescriptionInput = editProfileForm.querySelector('.popup__input_type_description');
-const profileTitle = document.querySelector('.profile__title');
-const profileDescription = document.querySelector('.profile__description');
-const cardsList = document.querySelector('.places__list');
+
+const addNewCardButton = document.querySelector('.profile__add-button');
+const addNewCardModal = document.querySelector('.popup_type_new-card');
 const addNewCardForm = document.forms['new-place'];
 const addNewCardFormNameInput = addNewCardForm.querySelector('.popup__input_type_card-name');
 const addNewCardFormLinkInput = addNewCardForm.querySelector('.popup__input_type_url');
-const modals = document.querySelectorAll('.popup');
+
 const cardImageModal = document.querySelector('.popup_type_image');
 const modalImage = cardImageModal.querySelector('.popup__image');
 const modalCaption = cardImageModal.querySelector('.popup__caption');
+
 const confirmModal = document.querySelector('.popup_type_confirm');
 const confirmButton = confirmModal.querySelector('.button');
+
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -45,6 +52,7 @@ const validationConfig = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 };
+
 let cardToDeleteId, cardToDelete;
 
 enableValidation(validationConfig);
@@ -164,16 +172,7 @@ confirmButton.addEventListener('click', () => {
   deleteCard(cardToDeleteId, cardToDelete);
 });
 
-// подтверждение удаления карточки
-// const handleDeleteCardConfirm = (cardId) => {
-//   const handleConfirmClick = () => {
-//     deleteCard(cardId);
-//     confirmButton.removeEventListener('click', handleConfirmClick);
-//   };
-//   openModal(confirmModal);
-//   confirmButton.addEventListener('click', handleConfirmClick);
-// };
-
+// открытие модалки с формой смены аватара
 profileAvatar.addEventListener('click', () => {
   clearValidation(editAvatarForm, validationConfig);
   editAvatarForm.reset();
