@@ -1,6 +1,6 @@
 import './index.css';
 import { createCard } from './components/card';
-import { openModal, closeModal, onOverlayCloseModal } from './components/modal';
+import { openModal, closeModal } from './components/modal';
 import { enableValidation, clearValidation } from './components/validation';
 import {
   getCards,
