@@ -30,6 +30,15 @@ const hideInputError = (formElement, inputElement, validationConfig) => {
 
 // проверка валидности
 const checkInputValidity = (formElement, inputElement, validationConfig) => {
+  // если ошибка вызвана паттерном
+  if (inputElement.validity.patternMismatch) {
+    // выводим кастомное сообщение из data-error-message
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+  } else {
+    // в противном случае - стандартное сообщение об ошибке
+    inputElement.setCustomValidity('');
+  }
+
   if (inputElement.validity.valid) {
     hideInputError(formElement, inputElement, validationConfig);
   } else {
