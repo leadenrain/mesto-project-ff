@@ -1,6 +1,6 @@
 import './index.css';
 import { createCard } from './components/card';
-import { openModal, closeModal, onOverlayCloseModal } from './components/modal';
+import { openModal, closeModal } from './components/modal';
 import { enableValidation, clearValidation } from './components/validation';
 import {
   getCards,
@@ -15,7 +15,6 @@ import {
 // глобальные переменные
 const cardsList = document.querySelector('.places__list');
 
-const modals = document.querySelectorAll('.popup');
 const closeModalButtons = document.querySelectorAll('.popup__close');
 
 const profileAvatar = document.querySelector('.profile__image');
@@ -233,9 +232,4 @@ closeModalButtons.forEach((button) => {
   button.addEventListener('click', (evt) => {
     closeModal(evt.target.closest('.popup'));
   });
-});
-
-// закрытие модалки по оверлею
-modals.forEach((popup) => {
-  popup.addEventListener('click', onOverlayCloseModal);
 });

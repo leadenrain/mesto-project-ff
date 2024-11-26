@@ -1,11 +1,13 @@
 export const openModal = (popup) => {
   popup.classList.add('popup_is-opened');
   document.addEventListener('keydown', onKeyCloseModal);
+  document.addeventListener('click', onOverlayCloseModal);
 };
 
 export const closeModal = (popup) => {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', onKeyCloseModal);
+  document.removeEventListener('click', onOverlayCloseModal);
 };
 
 const onKeyCloseModal = (evt) => {
